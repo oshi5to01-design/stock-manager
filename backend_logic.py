@@ -144,7 +144,7 @@ def run_main_process_from_ui(input_data):
         cursor.execute(
             "INSERT INTO history (日時,型番,製品名,カテゴリ,メーカー,数量,在庫数量) VALUES (?,?,?,?,?,?,?)",
             (
-                datetime.now(),
+                datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 input_data["型番"],
                 input_data["製品名"],
                 input_data["カテゴリ"],
