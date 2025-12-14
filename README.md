@@ -1,7 +1,7 @@
 # 📦 在庫管理システム (Stock Manager)
 
 社内の備品や部材の在庫管理を効率化するために開発したデスクトップアプリケーションです。
-Python (Tkinter) で直感的な入力インターフェースを作成し、データ管理にはSQLiteを採用しています。
+Python (Tkinter) で直感的な入力インターフェースを作成し、データ管理にはSQLiteを採用しています。→postgreSQLに変更
 
 ![デモ動画](demo1.gif)
 
@@ -33,7 +33,7 @@ VBAでのツール化も検討しましたが、セキュリティポリシー�
 ## 🔧 使用技術
 *   **言語**: Python 3.x
 *   **GUI**: Tkinter
-*   **Database**: SQLite3
+*   **Database**: SQLite3　→　postgreSQL
 *   **その他**: Configparser, Logging
 
 ## 🚀 インストール・実行方法
