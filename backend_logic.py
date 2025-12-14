@@ -7,8 +7,6 @@ from datetime import datetime
 # ==================================================================================
 # 設定読み込み
 # ==================================================================================
-# ※Postgresの場合はconfig.iniを使わず、コード内で接続情報を管理するか、
-# 環境変数を使うのが一般的だが、今回はハードコードで進める
 DB_HOST = "localhost"
 DB_NAME = "postgres"
 DB_USER = "postgres"
@@ -34,12 +32,9 @@ def get_autocomplete_suggestions(column_name, search_term):
     if not search_term:
         return []
 
-    # ★修正: 戻り値を2つ受け取る
     conn, cursor_factory = get_db_connection()
     try:
-        # ★修正: cursorを作成してから execute する
         with conn.cursor(cursor_factory=cursor_factory) as cursor:
-            # 列名はプレースホルダにできないのでF文字列、値は %s
             query = f"SELECT DISTINCT {column_name} FROM inventory WHERE CAST({column_name} AS TEXT) LIKE %s ORDER BY {column_name}"
             cursor.execute(query, (search_term + "%",))
             suggestions = cursor.fetchall()
@@ -50,7 +45,6 @@ def get_autocomplete_suggestions(column_name, search_term):
 
 def get_item_details_by_model(model_number):
     """指定された型番のレコードをデータベースから取得し、辞書として返す"""
-    # ★修正: 戻り値を2つ受け取る
     conn, cursor_factory = get_db_connection()
     try:
         with conn.cursor(cursor_factory=cursor_factory) as cursor:
@@ -94,11 +88,10 @@ def run_main_process_from_ui(input_data):
         return {"success": False, "message": "製品名と数量は必須です。"}
 
     # 3. データベース更新処理
-    # ★修正: 戻り値を2つ受け取る
+
     conn, cursor_factory = get_db_connection()
 
     try:
-        # ★修正: cursorを作成する
         with conn.cursor(cursor_factory=cursor_factory) as cursor:
 
             # 4. 既存レコードの確認
@@ -169,7 +162,11 @@ def run_main_process_from_ui(input_data):
 
             # 6. コミット（確定）
             conn.commit()
-            return {"success": True, "message": "データベースの更新が完了しました！"}
+            return {
+                "success": True,
+                "message": "データベースの更新が完了しました！",
+                "new_stock": final_stock,
+            }
 
     except Exception as e:
         conn.rollback()

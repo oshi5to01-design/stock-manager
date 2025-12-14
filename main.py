@@ -46,6 +46,10 @@ def execute_update():
 
         if result["success"]:
             messagebox.showinfo("成功", result["message"])
+            new_stock = result.get("new_stock")
+            if new_stock is not None:
+                stock_monitor_label.config(text=f"現在の在庫数:{new_stock}")
+
         else:
             logging.error(f"更新失敗: {result['message']}")
             messagebox.showerror("エラー", result["message"])
